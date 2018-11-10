@@ -9,28 +9,14 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {'queue': []}
 
     var socket = require('socket.io-client')('http://localhost:3333');
     socket.on('connect', function(){console.log("connected")});
 
     socket.on('tweet', (function(data){
-      console.log("d:", data)
-      this.setState({
-        'queue': [...this.state.queue, data]
-      })
-      console.log("state updated:", this.state)
+      this.props.alert.info(data.text);
+      console.log(data)
     }).bind(this));
-
-    setInterval((function(){ 
-        console.log("internal running")
-        if (this.state.queue.length > 0) {
-          const array = [...this.state.queue];
-          const deleted = array.splice(0,1)
-          this.props.alert.info(deleted[0].text)
-          // this.setState({queue:array})
-        }   
-    }).bind(this), 1000);
 
     socket.on('disconnect', function(){
       console.log("done")

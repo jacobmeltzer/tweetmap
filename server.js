@@ -21,19 +21,33 @@ http.listen(port, function(){
     console.log('listening on port ' + port);
 });
 
+
+const queue = [];
+
+const stream = tweets.stream('statuses/filter', { track: 'trump' }, function(stream) {
+  
+  stream.on('data', function (data) {
+    if (queue.length < 100) {
+      if(data.user != null && data.user.location != null) {
+        queue.push({text: data.text, location: data.user.location})
+      }
+    }
+  })
+});
+
 // create a socket.io connection with the client
 io.on('connection', function (socket) {
-    console.log('User connected. Socket id %s', socket.id);
+  console.log('User connected. Socket id %s', socket.id);
 
-    tweets.stream('statuses/filter', { track: 'trump' }, function(stream) {
-        stream.on('data', function (data) {
-            console.log("emitting")
-            socket.emit('tweet', data);
-            console.log(data);
-        });
-    });
+  setInterval(function() {
+    if (queue.length > 0) {
+      const tweet = queue.pop()
+      console.log(tweet.text)
+      socket.emit('tweet', tweet);
+    }
+  }, 500);
 
-    socket.on('disconnect', function () {
-        console.log('User disconnected. %s. Socket id %s', socket.id);
-    });
+  socket.on('disconnect', function () {
+      console.log('User disconnected. %s. Socket id %s', socket.id);
+  });
 });
