@@ -12,7 +12,6 @@ export class MapContainer extends Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    alert(nextProps)
     return nextProps != this.props
   }
 
