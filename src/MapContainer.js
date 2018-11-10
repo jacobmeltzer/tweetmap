@@ -11,11 +11,16 @@ export class MapContainer extends Component {
     zoom: 5
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps != this.props
+  componentWillReceiveProps(nextProps) {
+    console.log("nextProps:", nextProps)
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return nextProps != this.props
+  // }
+
   render() {
+    console.log(this.props.markers)
     return (
       <Map 
         initialCenter={this.props.center}
@@ -284,24 +289,10 @@ export class MapContainer extends Component {
             <div>
             </div>
         </InfoWindow>
-        <Marker
-          title={'The marker`s title will appear as a tooltip.'}
-          name={'SOMA'}
-          icon={{
-            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Location_dot_red.svg/128px-Location_dot_red.svg.png",
-            anchor: new this.props.google.maps.Point(16,16),
-            scaledSize: new this.props.google.maps.Size(16,16)
-          }}
-          position={{lat: 37.778519, lng: -122.405640}} />
-          <Marker
-          title={'The marker`s title will appear as a tooltip.'}
-          name={'SOMA'}
-          icon={{
-            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Location_dot_red.svg/128px-Location_dot_red.svg.png",
-            anchor: new this.props.google.maps.Point(16,16),
-            scaledSize: new this.props.google.maps.Size(16,16)
-          }}
-          position={{lat: 38.778519, lng: -122.405640}} />
+        {console.log("AYYY", this.props.markers)}
+        {this.props.markers.map(function(o, index){
+                    return <Marker position={ {lat: o.lat, lng: o.lng} }/>
+                  })}
       </Map>
     );
   }

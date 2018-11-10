@@ -21,12 +21,18 @@ class App extends Component {
     socket.on('disconnect', function(){
       console.log("done")
     });
+
+
+    this.state = {markers: [{lat: 42.3357692, lng: -71.1556393, color: 'red'}, {lat: 38.826720, lng: -75.3701327, color: 'red'}]}
+
+
   }
 
   render() {
+
     return (
       <div className="App">
-        <MapContainer/>
+        <MapContainer markers={this.state.markers}/>
         <input className="SearchField" type="text" />
       </div>
     );

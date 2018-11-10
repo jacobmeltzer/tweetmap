@@ -29,7 +29,33 @@ const stream = tweets.stream('statuses/filter', { track: 'trump' }, function(str
   stream.on('data', function (data) {
     if (queue.length < 100) {
       if(data.user != null && data.user.location != null) {
-        queue.push({text: data.text, location: data.user.location})
+
+        var NodeGeocoder = require('node-geocoder');
+        var Sentiment = require('sentiment');
+        const sentiment = new Sentiment();
+        
+        var options = {
+          provider: 'google',
+          apiKey: 'AIzaSyDzHUDviFG9JYvpHTctS1Lr2ekfJgaQEEU'
+        };
+        var geocoder = NodeGeocoder(options);
+        // Using callback
+        geocoder.geocode(data.user.location, function(err, res) {
+          if(res[0]) {
+            const sentimentResult = sentiment.analyze(data.text)
+            const sentimentScore = sentimentResult.comparative
+            if (sentimentScore > 0) {
+              c = 'green'
+            } else if (sentimentScore < 0) {
+              c = 'red'
+            } else {
+              c = 'yellow'
+            }
+            const item = {text: data.text, location: data.user.location, lat: res[0].latitude, lon: res[0].longitude, sentiment: sentimentScore, color: c}
+            queue.push(item)
+            console.log(item)
+          }
+        });
       }
     }
   })
