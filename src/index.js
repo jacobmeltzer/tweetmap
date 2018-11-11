@@ -5,7 +5,7 @@ import AlertTemplate from "react-alert-template-basic";
 import App from "./App";
 
 const options = {
-  timeout: 5000,
+  timeout: 2000,
   position: "top left",
   offset: '30px',
 };

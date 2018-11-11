@@ -6,21 +6,19 @@ export class MapContainer extends Component {
   static defaultProps = {
     center: {
       lat: 37.7286116,
-      lng: -96.808727
+      lng: -96.808727,
     },
-    zoom: 5
+    zoom: 5,
   };
 
-  componentWillReceiveProps(nextProps) {
-    console.log("nextProps:", nextProps)
-  }
 
   // shouldComponentUpdate(nextProps, nextState) {
   //   return nextProps != this.props
   // }
 
   render() {
-    console.log(this.props.markers)
+    
+
     return (
       <Map 
         initialCenter={this.props.center}
@@ -289,9 +287,16 @@ export class MapContainer extends Component {
             <div>
             </div>
         </InfoWindow>
-        {console.log("AYYY", this.props.markers)}
         {this.props.markers.map(function(o, index){
-                    return <Marker position={ {lat: o.lat, lng: o.lng} }/>
+                    const icon = {
+                        path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+                        fillColor: o.color,
+                        fillOpacity: 0.8,
+                        scale: 0.05,
+                        strokeColor: o.color,
+                        strokeWeight: 2,
+                      };
+                    return <Marker icon={icon} position={ {lat: o.lat, lng: o.lng} }/>
                   })}
       </Map>
     );
