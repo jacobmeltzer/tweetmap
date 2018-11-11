@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@google-cloud/translate": "^2.1.2",
     "concurrently": "^4.0.1",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
@@ -20,6 +21,7 @@
     "react-transition-group": "^2.5.0",
     "sentiment": "^5.0.1",
     "socket.io": "^2.1.1",
+    "translate": "^1.0.3",
     "twitter": "^1.7.1"
   },
   "scripts": {

@@ -28,7 +28,10 @@ class App extends Component {
 
     // this.state = {markers: [{lat: 42.3357692, lng: -71.1556393, color: 'red'}, {lat: 38.826720, lng: -75.3701327, color: 'red'}]}
 
-
+    this.changeTerm = () => {
+      this.socket.emit('change', this.state.inputValue)
+      this.setState({markers: []});
+    }
   }
 
   render() {
@@ -37,7 +40,7 @@ class App extends Component {
         <MapContainer markers={this.state.markers}/>
         <input className="SearchField" onChange={(evt) => this.updateInputValue(evt)}  type="text" />
         <button className="PauseButton" onClick={() => this.socket.emit('pause', 'now')}>Pause</button>
-        <button className="ChangeTermButton" onClick={() => this.socket.emit('change', this.state.inputValue)}>Search</button>
+        <button className="ChangeTermButton" onClick={this.changeTerm}>Search</button>
       </div>
     );
   }
